@@ -1,0 +1,22 @@
+
+import threading
+from time import sleep
+
+class Hidrometro:
+    def __init__(self, id):
+        self.id = id
+        self.bloqueado = False        
+    
+    def enviaDado(self, dado):
+        if self.bloqueado != True:
+            while self.bloqueado != True:
+                print('Enviando', dado, 'litros')
+                sleep(1)
+        else:
+            print('bloqueado')
+    
+
+hidrometro1 = Hidrometro(123) #cria o objeto
+dado = 15
+hidrome = threading.Thread(target = hidrometro1.enviaDado(dado), name = 'gera') #executando como thread
+hidrome.start() #startando
