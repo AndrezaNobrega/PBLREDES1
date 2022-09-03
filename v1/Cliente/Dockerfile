@@ -1,10 +1,7 @@
-FROM ubuntu:latest
+FROM python:latest
 
-run apt update
-run apt install python3 -y
+ADD cliente.py /client/
 
-WORKDIR /usr/app/src
+WORKDIR /client/
 
-COPY cliente.py ./
-
-CMD ["python3", "./cliente.py"]
+CMD ["python3", "/client/cliente.py"]

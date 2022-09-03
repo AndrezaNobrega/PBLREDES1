@@ -1,10 +1,9 @@
-FROM ubuntu:latest
+FROM python:latest
 
-run apt update
-run apt install python3 -y
+ADD server.py /server/
 
-WORKDIR /usr/app/src
+EXPOSE 50000
 
-COPY server.py ./
+WORKDIR /server/
 
-CMD ["python3", "./server.py"]
+CMD ["python3", "/server/server.py"]
