@@ -9,4 +9,4 @@ serverSock.bind((UDP_IP_ADDRESS, UDP_PORT_NO)) #usamos o IP e a porta
 
 while True:
     data, addr = serverSock.recvfrom(1024)
-    print ("Message: " + data.decode())
+    print ("Recebendo: " + data.decode())

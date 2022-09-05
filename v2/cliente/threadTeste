@@ -1,6 +1,7 @@
 
 import threading
 from time import sleep
+from datetime import datetime
 
 class Hidrometro:
     def __init__(self, id):
@@ -10,6 +11,7 @@ class Hidrometro:
     def enviaDado(self, dado):
         if self.bloqueado != True:
             while self.bloqueado != True:
+                print(datetime.now())
                 print('Enviando', dado, 'litros')
                 sleep(1)
         else:
