@@ -3,17 +3,28 @@ import threading
 from time import sleep
 import datetime
 
-UDP_IP_ADDRESS = "127.0.0.1"
-UDP_PORT_NO = 60000
+UDP_IP_ADDRESS = "127.0.0.1" #ip local
+UDP_PORT_NO = 60000 #porta da máquina
 
-clientSock = socket.socket(socket.AF_INET, socket.SOCK_DGRAM) #criando o socket cliente
+clientSock = socket.socket(socket.AF_INET, socket.SOCK_DGRAM) #criando o socket cliente, conexão UDP
 
 class Hidrometro:
     def __init__(self, id):
         self.id = id
-        self.bloqueado = False        
-    
-    def enviaDado(self, dado):
+        self.bloqueado = False 
+
+    def getId(self): #retorna ID
+        return id
+
+    def setBloqueado(self): #Bloquear e desbloquear hidrometro
+        if self.bloqueado == False:
+            bloqueado = True
+            self.bloqueado = bloqueado
+        else:
+            self.bloqueado = False
+        return self.bloqueado
+
+    def enviaDado(self, dado): #envia dados para nuvem
         if self.bloqueado != True:
             while self.bloqueado != True:
                 data = datetime.datetime.now() #horário atual
