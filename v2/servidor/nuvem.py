@@ -12,5 +12,6 @@ while True:
     #print ("Recebendo: " + data.decode())
     dado = data.decode()
     #print(dado)
-    print('Litros utilizados' + dado[:-16])
-    print('Horário/Datadado' + dado[-16:])
+    print('\nLitros utilizados: ' + dado[:-18])
+    print('\nHorário/Data: ' + dado[-16:-2])
+    print('\nVazão atual: ' + dado[-2:])

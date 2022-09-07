@@ -26,17 +26,18 @@ class Hidrometro:
 
     def enviaDado(self, dado): #envia dados para nuvem
         if self.bloqueado != True:             
-            vazao = dado #para salvar a vazão
-            vazao = int(vazao)
-            while self.bloqueado != True:  
+            vazao = dado #para salvar a vazão            
+            while self.bloqueado != True:
+                vazao = int(vazao)  
                 dado = int(dado)                
                 dado = dado+vazao
                 dado = str(dado)
+                vazao = str(vazao)
                 data = datetime.datetime.now() #horário atual
                 dataAux = str(data) #convertendo para string
                 dataAux= dataAux[:16] #recortando horas e segundos                
-                litros= str(dado + dataAux)
-                print (litros)
+                litros= str(dado + dataAux +vazao)
+                print ('\nLitros utilizados:', dado, '\nData do envio:', dataAux, '\nVazão atual:', vazao)
                 litros = litros.encode()
                 clientSock.sendto(litros, (UDP_IP_ADDRESS, UDP_PORT_NO))                                                  
                 sleep(3)
