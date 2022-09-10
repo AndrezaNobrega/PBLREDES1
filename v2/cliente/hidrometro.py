@@ -1,5 +1,5 @@
 import socket
-import threading
+import _thread
 from time import sleep
 import datetime
 
@@ -28,12 +28,11 @@ class Hidrometro:
         id = str(self.id)
         if self.bloqueado != True:             
             vazao = dado #para salvar a vazão   -variavel aux       
-            while self.bloqueado != True:
+            while self.bloqueado != True:  
                 vazao = int(vazao)  
-                dado = int(dado)                
-                dado = dado+vazao
+                dado = int(dado)                  
                 dado = str(dado)
-                vazao = str(vazao)
+                vazao = str(vazao)              
                 data = datetime.datetime.now() #horário atual
                 dataAux = str(data) #convertendo para string
                 dataAux= dataAux[:16] #recortando horas e segundos                
@@ -42,8 +41,14 @@ class Hidrometro:
                 litros = litros.encode()
                 clientSock.sendto(litros, (UDP_IP_ADDRESS, UDP_PORT_NO))                                                  
                 sleep(3)
+                vazao = int(vazao)  
+                dado = int(dado)                
+                dado = dado+vazao
+                dado = str(dado)
+                vazao = str(vazao)
         else:
             print('bloqueado')
 
-
+    def threadEnvia(self, dado): #para iniciar como thread
+        _thread.start_new_thread(self.enviaDado(dado))
 
