@@ -45,15 +45,16 @@ def main():
 #recebendo no servidor e enviando para nuvem
     print('Servidor pronto')
     dadosHidr = [] #criando lista p os dados dos hidrometros
+    sheet = service.spreadsheets() #resgata o arquivo
     while True:
         data, addr = serverSock.recvfrom(1024)    
         dado = data.decode()
         consumo = [dado[:-22], dado[-20:-6], dado[-6:-4], dado[-4:]]    #separando cada dado para uma célula
         dadosHidr.append(consumo)
         #envio para google sheets
-        result = sheet.values().update(spreadsheetId='1SDuvwzFTQ4_KIgtYVUgTLKVa2okDRYBc4gXl2Fn8fO0',
+        result = sheet.values().update(spreadsheetId='1SDuvwzFTQ4_KIgtYVUgTLKVa2okDRYBc4gXl2Fn8fO0', #id da planilha
                                     range='Página1!A2', 
-                                    valueInputOption= 'USER_ENTERED', 
+                                    valueInputOption= 'USER_ENTERED', #tipo de input - Aqui só avisa como será tratado
                                     body= {"values": dadosHidr}).execute()
         
         print('\nLitros utilizados: ' + dado[:-22])

@@ -27,7 +27,7 @@ class Hidrometro:
     def enviaDado(self, dado): #envia dados para nuvem
         id = str(self.id)
         if self.bloqueado != True:             
-            vazao = dado #para salvar a vazão            
+            vazao = dado #para salvar a vazão   -variavel aux       
             while self.bloqueado != True:
                 vazao = int(vazao)  
                 dado = int(dado)                
