@@ -17,7 +17,8 @@ from PyQt5 import QtCore, QtGui, QtWidgets
 class Ui_Paineldecontrole(object):
     def setupUi(self, Paineldecontrole):
         Paineldecontrole.setObjectName("Paineldecontrole")
-        Paineldecontrole.resize(271, 190)        
+        Paineldecontrole.resize(271, 190)
+        Paineldecontrole.setFixedSize(271,190)            
         self.centralwidget = QtWidgets.QWidget(Paineldecontrole)
         self.centralwidget.setObjectName("centralwidget")
         self.botaoOk = QtWidgets.QPushButton(self.centralwidget)
