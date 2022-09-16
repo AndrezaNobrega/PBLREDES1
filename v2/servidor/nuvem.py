@@ -43,25 +43,28 @@ def main():
     print(values) """
 
 #recebendo no servidor e enviando para nuvem
-    print('Servidor pronto')
-    dadosHidr = [] #criando lista p os dados dos hidrometros
+    print('Servidor pronto')    
     sheet = service.spreadsheets() #resgata o arquivo
     while True:
-        data, addr = serverSock.recvfrom(1024)    
-        dado = data.decode()
-        consumo = [dado[:-22], dado[-20:-6], dado[-6:-4], dado[-4:]]    #separando cada dado para uma célula
-        dadosHidr.append(consumo)
-        #envio para google sheets
-        result = sheet.values().update(spreadsheetId='1SDuvwzFTQ4_KIgtYVUgTLKVa2okDRYBc4gXl2Fn8fO0', #id da planilha
+        for i in range(1):
+            dadosHidr = [] #criando lista p os dados dos hidrometros - a lista recebe duas colunas e depois zera novamente
+            data, addr = serverSock.recvfrom(1024)    
+            dado = data.decode()
+            print('\nLitros utilizados: ' + dado[:-22])
+            print('\nHorário/Data: ' + dado[-20:-6])
+            print('\nVazão atual: ' + dado[-6:-4])
+            print('\n ID:' + dado[-4:])
+            consumo = dado[:-22], dado[-20:-6], dado[-6:-4], dado[-4:]   #separando cada dado para uma célula
+            dadosHidr.append(consumo)
+            print(i)
+        #envio para google sheets        
+        result = sheet.values().append(spreadsheetId='1SDuvwzFTQ4_KIgtYVUgTLKVa2okDRYBc4gXl2Fn8fO0', #id da planilha
                                     range='Página1!A2', 
                                     valueInputOption= 'USER_ENTERED', #tipo de input - Aqui só avisa como será tratado
                                     body= {"values": dadosHidr}).execute()
         
-        print('\nLitros utilizados: ' + dado[:-22])
-        print('\nHorário/Data: ' + dado[-20:-6])
-        print('\nVazão atual: ' + dado[-6:-4])
-        print('\n ID:' + dado[-4:])
-        sleep(10)
+        
+        sleep(5)
 
 if __name__ == '__main__':
     main()

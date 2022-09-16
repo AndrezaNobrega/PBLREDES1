@@ -26,19 +26,17 @@ def getData():
         dataAux= dataAux[:16] #recortando horas e segundos da String
         return dataAux
 
-
 def recebeValor(): #pede o valor
     global vazao
     while True:
         sem.acquire()
         try:
-            vazao = int(inputimeout(prompt='digite o valor da vazão:\n', timeout=4)) # no try ele vai mudar o valor
+            vazao = int(inputimeout(prompt='digite o valor da vazão:\n', timeout=5)) # no try ele vai mudar o valor
             print('você digitou', vazao)                    
         except TimeoutOccurred:
             print('Valor permanece o mesmo')                     
         sem.release()
-        time.sleep(3)
-        
+        time.sleep(2)  
 
 def somaEnvia():   #soma, recolhe dados e os envia   
     global litroConsumidos
@@ -59,7 +57,7 @@ def somaEnvia():   #soma, recolhe dados e os envia
         litroConsumidos = int(litroConsumidos)
         vazao = int(vazao)        
         sem.release()
-        time.sleep(3)
+        time.sleep(2)
 
 print('\nA VAZÃO DEVE SER SEMPRE NO FORMATO XX \n')
 t = threading.Thread(target = recebeValor)
