@@ -7,15 +7,14 @@ from google_auth_oauthlib.flow import InstalledAppFlow
 from google.auth.transport.requests import Request
 from google.oauth2.credentials import Credentials
 
-UDP_IP_ADDRESS = "127.0.0.1"
-UDP_PORT_NO = 60000
+import _thread
 
-#criando o server
-serverSock = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
-serverSock.bind((UDP_IP_ADDRESS, UDP_PORT_NO)) #usamos o IP e a porta
+HOST = ''              # Endereco IP do Servidor
+PORT = 5000            # Porta que o Servidor esta
 
 SCOPES = ['https://www.googleapis.com/auth/spreadsheets']
-def main():
+print('Aguardando conexões')
+def conectado(con, cliente):
     #Script para conexão servidor/nuvem (google sheets)
     creds = None    
     if os.path.exists('token.json'):
@@ -33,31 +32,23 @@ def main():
             token.write(creds.to_json())
 
     service = build('sheets', 'v4', credentials=creds)
-
-    """ #usar para receber
-    sheet = service.spreadsheets() #resgata o arquivo
-    result = sheet.values().get(spreadsheetId='1SDuvwzFTQ4_KIgtYVUgTLKVa2okDRYBc4gXl2Fn8fO0',
-                                range='Página1!A1:D14').execute()
-    values = result.get('values', []) # pegamos o valor da célula
-
-    print(values) """
-
-#recebendo no servidor e enviando para nuvem
-    print('Servidor pronto')    
-    sheet = service.spreadsheets() #resgata o arquivo
+    print ('Conectado por', cliente)
+    sheet = service.spreadsheets() #resgata o arquivo      
     while True:
         for i in range(1):
             dadosHidr = [] #criando lista p os dados dos hidrometros - a lista recebe duas colunas e depois zera novamente
-            data, addr = serverSock.recvfrom(1024)    
-            dado = data.decode()
+            data = con.recv(1024) #recebendo            
+            dado = data.decode()        
+            if not data: break
+            print ('Recebendo dado de:\n', cliente)
             print('\nLitros utilizados: ' + dado[:-22])
             print('\nHorário/Data: ' + dado[-20:-6])
             print('\nVazão atual: ' + dado[-6:-4])
-            print('\n ID:' + dado[-4:])
-            consumo = dado[:-22], dado[-20:-6], dado[-6:-4], dado[-4:]   #separando cada dado para uma célula
+            print('\n ID:' + dado[-4:])            
+            consumo = dado[:-22], dado[-20:-6], dado[-6:-4], dado[-4:]
             dadosHidr.append(consumo)
             print(i)
-        #envio para google sheets        
+        #envio para google sheets. Damos sempre um append com uma  linha no final        
         result = sheet.values().append(spreadsheetId='1SDuvwzFTQ4_KIgtYVUgTLKVa2okDRYBc4gXl2Fn8fO0', #id da planilha
                                     range='Página1!A2', 
                                     valueInputOption= 'USER_ENTERED', #tipo de input - Aqui só avisa como será tratado
@@ -66,5 +57,20 @@ def main():
         
         sleep(5)
 
-if __name__ == '__main__':
-    main()
+    print ('Finalizando conexao do cliente', cliente)
+    con.close()
+    _thread.exit()
+
+tcp = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
+
+orig = (HOST, PORT)
+
+tcp.bind(orig)
+tcp.listen(1)
+
+while True: #para aceitar múltiplas conexões, cada hidrometro no servidor é executado como uma thread
+    con, cliente = tcp.accept()
+    _thread.start_new_thread(conectado, tuple([con, cliente]))
+
+tcp.close()
+

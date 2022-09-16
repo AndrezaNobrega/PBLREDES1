@@ -1,12 +1,3 @@
-import socket
-import _thread
-from time import sleep
-
-
-UDP_IP_ADDRESS = "127.0.0.1" #ip local
-UDP_PORT_NO = 60000 #porta da máquina
-
-clientSock = socket.socket(socket.AF_INET, socket.SOCK_DGRAM) #criando o socket cliente, conexão UDP
 
 class Hidrometro: #construtor
     def __init__(self, id):

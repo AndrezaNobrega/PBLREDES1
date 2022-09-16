@@ -6,17 +6,16 @@ import random
 import socket
 import datetime
 
-UDP_IP_ADDRESS = "127.0.0.1" #ip local
-UDP_PORT_NO = 60000 #porta da máquina
+HOST = '127.0.0.1'     # Endereco IP do Servidor
+PORT = 5000            # Porta que o Servidor esta
+tcp = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
+dest = (HOST, PORT)
+tcp.connect(dest)
 
-clientSock = socket.socket(socket.AF_INET, socket.SOCK_DGRAM) #criando o socket cliente, conexão UDP
-
-vazao = 0
+vazao = 11 #a vazão inicia com 11
 litroConsumidos = 0
 
 sem = threading.Semaphore() #semaforo
-
-id = random.randint(1000,9999) #gera a matrícula
 hidrometroiD = str(random.randint(1000,9999))
 hidrometro1 = hidrometro.Hidrometro(hidrometroiD) #cria objeto
 
@@ -53,12 +52,12 @@ def somaEnvia():   #soma, recolhe dados e os envia
         infoHidro = litroConsumidos + data + vazao + id
         print ('\n ID:', id ,'\nLitros utilizados:', litroConsumidos, '\nData do envio:', data, '\nVazão atual:', vazao) #visualização do envio
         infoHidro = infoHidro.encode() #encodando para que possa ser enviado
-        clientSock.sendto(infoHidro, (UDP_IP_ADDRESS, UDP_PORT_NO))  #enviando dados 
+        tcp.send(infoHidro)  #enviando dados 
         litroConsumidos = int(litroConsumidos)
         vazao = int(vazao)        
         sem.release()
         time.sleep(2)
-
+    tcp.close()
 print('\nA VAZÃO DEVE SER SEMPRE NO FORMATO XX \n')
 t = threading.Thread(target = recebeValor)
 t.start()
