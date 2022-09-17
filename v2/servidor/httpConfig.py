@@ -1,26 +1,28 @@
-# Python 3 server example
-from http.server import BaseHTTPRequestHandler, HTTPServer
+from cgitb import text
+from http.server import HTTPServer, BaseHTTPRequestHandler
 import time
 
-hostName = "localhost"
-serverPort = 8080
+HOST = ''
+PORT = 9999
 
-class MyServer(BaseHTTPRequestHandler):
+class SimpleHTTP(BaseHTTPRequestHandler):
+    
     def do_GET(self):
         self.send_response(200)
         self.send_header("Content-type", "text/html")
-        self.end_headers()                       
-        self.wfile.write(bytes("<p>This is an example web server.</p>", "utf-8"))
-        
+        self.end_headers()    
+        self.wfile.write(bytes("<html><body><h1>HELLO WORLD!</h1></body></hmtl>","utf-8"))
 
-if __name__ == "__main__":        
-    webServer = HTTPServer((hostName, serverPort), MyServer)
-    print("Server started http://%s:%s" % (hostName, serverPort))
+    def do_POST(self): #aqui enviamos informações
+        self.send_response(200)
+        self.send_header("Content-type", "application/json")
+        self.end_headers()
 
-    try:
-        webServer.serve_forever()
-    except KeyboardInterrupt:
-        pass
+        date = time.strftime("%Y-%m-%d %H:%M:%S", time.localtime(time.time()))
+        self.wfile.write(bytes('{"time":"'+ date + '"}', "utf-8"))
 
-    webServer.server_close()
-    print("Server stopped.")
+server = HTTPServer((HOST, PORT), SimpleHTTP )
+print('Server rodando')
+server.serve_forever()
+server.server_close()
+print('server parou')

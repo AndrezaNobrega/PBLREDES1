@@ -1,23 +1,23 @@
-totalLitros = 16050
+totalLitros = 654654
 metrosC = totalLitros/1000
 
 if totalLitros <= 6000:
     valorReais = 28,82
-    if valorReais > 7 and 10:
-        valorReais = (600 - metrosC)*1.17 + 28.82
-        if valorReais > 11000 and 15000:
-            valorReais = (1100-metrosC)*7.4 + 28.82
-            if valorReais > 16000 and 20000:
-                valorReais = (1600-metrosC)*8 + 28.82
-                if valorReais > 21000 and 25000:
-                    valorReais = (2100-metrosC)*10.51 + 28.82
-                    if valorReais > 26000 and 30000:
-                        valorReais = (2600-metrosC)*11.71 + 28.82
-                        if valorReais > 31000 and 40000:
-                            valorReais = (3100-metrosC)*12.90 + 28.82
-                            if valorReais > 41000 and 50000:
-                                valorReais = (4100-metrosC)*14.79 + 28.82
-                                if valorReais > 5000:
-                                    valorReais = (5000- metrosC)*17.78 + 28.82
-
+if metrosC > 7 and 10:
+    valorReais = (metrosC - 6)*1.17 + 28.82
+if metrosC > 11 and 15:
+    valorReais = (metrosC - 11)*7.4 + 28.82
+if metrosC > 16 and 20:
+    valorReais = (metrosC - 16)*8 + 28.82
+if metrosC > 21 and 25:
+    valorReais = (metrosC - 21)*10.51 + 28.82
+if metrosC > 26 and 30:
+    valorReais = (metrosC - 26)*11.71 + 28.82
+if metrosC > 31 and 40:
+    valorReais = (metrosC - 31)*12.90 + 28.82
+if metrosC > 41 and 50:
+    valorReais = (metrosC - 41)*14.79 + 28.82
+if metrosC > 50:
+    valorReais = (metrosC - 50)*17.78 + 28.82
+valorReais = "{:.2f}".format(valorReais)
 print('o valor da sua conta é:', valorReais)

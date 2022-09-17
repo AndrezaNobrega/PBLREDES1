@@ -7,8 +7,9 @@ from google.oauth2.credentials import Credentials
 
 # If modifying these scopes, delete the file token.json.
 SCOPES = ['https://www.googleapis.com/auth/spreadsheets']
-
-def main():
+globalValues = 0
+def getValues():
+    global globalValues
     #Script para conexão servidor/nuvem (google sheets)
     creds = None
     # The file token.json stores the user's access and refresh tokens, and is
@@ -29,30 +30,39 @@ def main():
             token.write(creds.to_json())
 
     service = build('sheets', 'v4', credentials=creds)
-
-    # Call the Sheets API
+    
+    #Transformando os valores em uma lista
     sheet = service.spreadsheets() #resgata o arquivo
     result = sheet.values().get(spreadsheetId='1SDuvwzFTQ4_KIgtYVUgTLKVa2okDRYBc4gXl2Fn8fO0',
-                                range='Página1!A1:D14').execute()
+                                range='Página1').execute()
     values = result.get('values', []) # pegamos o valor da célula
-
-    print(values)
-    
-    valoresAdicionar = [["12345", "258", '2022-09-07 19:02', '89'],
-                        ["12345", "258", '2022-09-07 19:02', '89'],
-                        ["12345", "258", '2022-09-07 19:02', '89'],
-                        ["12345", "258", '2022-09-07 19:02', '89'],
-                            ]
-
-    result = sheet.values().update(spreadsheetId='1SDuvwzFTQ4_KIgtYVUgTLKVa2okDRYBc4gXl2Fn8fO0',
-                                   range='Página1!A1', 
-                                   valueInputOption= 'USER_ENTERED', 
-                                   body= {"values": valoresAdicionar}).execute()
+    globalValues = values  
     
 
+def getId(id): #lista pelo ID
+    global globalValues    
+    contador = 0
+    listaConta = []    
+    for globalValues in globalValues:
+        if globalValues[3] == id:
+            contador = contador + 1
+            print (contador ,globalValues)
+            listaConta.append(globalValues)
 
-#ir add de 10s em 10
+    return listaConta
+
+def getLitrosID(listaConta):
+   for listaConta in listaConta:
+    aux = listaConta[0]
+    print(aux)
+    
+
+
+ 
+
 
     
-if __name__ == '__main__':
-    main()
+getValues() #chamando aqui
+id = input('Digite aqui:')
+listaConsumo = getId(id)
+getLitrosID(listaConsumo)

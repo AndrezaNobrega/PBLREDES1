@@ -38,7 +38,7 @@ def conectado(con, cliente):
         for i in range(1):
             dadosHidr = [] #criando lista p os dados dos hidrometros - a lista recebe duas colunas e depois zera novamente
             data = con.recv(1024) #recebendo            
-            dado = data.decode()        
+            dado = data.decode() 
             if not data: break
             print ('Recebendo dado de:\n', cliente)
             print('\nLitros utilizados: ' + dado[:-22])
