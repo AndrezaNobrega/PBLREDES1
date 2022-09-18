@@ -14,7 +14,7 @@ class myhandler(http.server.SimpleHTTPRequestHandler):
             #HTTP Client
             #Para consulta utilizar
             #{
-	        #"search" : 4546
+	        #"search" : idHidrômetro
             #}            
             content_length = int(self.headers['Content-Length']) #json do insomnia
             
