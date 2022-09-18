@@ -51,16 +51,12 @@ def getId(id): #lista pelo ID
 
     return listaConta
 
-def getLitrosID(listaConta):
-   for listaConta in listaConta:
-    aux = listaConta[0]
-    print(aux)
-    
-
-
- 
-
-
+def getLitrosID(listaConta): #método que pega o valor consumido com base na id
+    aux = 0
+    for listaConta in listaConta:
+        aux = listaConta[0]
+        print(aux)
+    return aux
     
 getValues() #chamando aqui
 id = input('Digite aqui:')

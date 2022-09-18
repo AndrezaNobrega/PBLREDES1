@@ -1,4 +1,4 @@
-totalLitros = 654654
+totalLitros = 23002
 metrosC = totalLitros/1000
 
 if totalLitros <= 6000:
