@@ -4,6 +4,7 @@ from googleapiclient.discovery import build
 #from google_auth_oauthlib.flow import InstalledAppFlow
 from google.auth.transport.requests import Request
 from google.oauth2.credentials import Credentials
+import json
 
 # If modifying these scopes, delete the file token.json.
 SCOPES = ['https://www.googleapis.com/auth/spreadsheets']
@@ -40,11 +41,15 @@ def getValues():
     
 
 def getId(id): #lista pelo ID
-    global globalValues    
+    getValues() 
+    global globalValues
+
+    print(globalValues) 
+
     contador = 0
     listaConta = []    
     for globalValues in globalValues:
-        if globalValues[3] == id:
+        if globalValues[3] == str(id):
             contador = contador + 1
             print (contador ,globalValues)
             listaConta.append(globalValues)
@@ -52,13 +57,10 @@ def getId(id): #lista pelo ID
     return listaConta
 
 def getLitrosID(listaConta): #método que pega o valor consumido com base na id
+    getValues() 
     aux = 0
     for listaConta in listaConta:
         aux = listaConta[0]
         print(aux)
     return aux
-    
-getValues() #chamando aqui
-id = input('Digite aqui:')
-listaConsumo = getId(id)
-getLitrosID(listaConsumo)
+#chamando aqui
