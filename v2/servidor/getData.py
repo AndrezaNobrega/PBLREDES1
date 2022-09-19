@@ -8,7 +8,7 @@ from google.oauth2.credentials import Credentials
 import json
 from datetime import date, time, datetime, timedelta
 
-# If modifying these scopes, delete the file token.json.
+#Scrip do google sheets que é utilizado para buscar as informações da planilha
 SCOPES = ['https://www.googleapis.com/auth/spreadsheets']
 globalValues = 0
 def getValues():
@@ -71,6 +71,7 @@ def getLitrosID(id): #método que pega o valor consumido com base na id
     return aux
 
 #retorna o valor da conta, com base na sua id
+#usa como parametro a sua ID
 def calculoConta(id): #calculando o valor da conta
     totalLitros = int(getLitrosID(id))
 
@@ -96,6 +97,7 @@ def calculoConta(id): #calculando o valor da conta
     return valorReais[:4]
 
 # retorna se o hidrometro está em débito ou não
+# parametro a id do hidrômetro que será consultado
 def emDebito(id):
     devendo = str('Em débito')
     listaId = getId(id) #pega o histórico da id específica
@@ -146,6 +148,7 @@ def bloqueiaHidro(id):
     print(Message)
     Message = Message.encode()    
     clientSock.sendto(Message, (UDP_IP_ADDRESS, UDP_PORT_NO))
+    return id
 
 #enviar mensagem parra desbloqueiar o hidrometro
 #usa como parametro a ID do hidrometro
@@ -159,7 +162,4 @@ def desbloqueiaHidro(id):
     print(Message)
     Message = Message.encode()    
     clientSock.sendto(Message, (UDP_IP_ADDRESS, UDP_PORT_NO))
-
-id =input('Digite o ID do hidrometro que será bloqueado: ')
-id = int(id)
-desbloqueiaHidro(id)
+    return id
