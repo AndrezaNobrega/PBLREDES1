@@ -1,4 +1,5 @@
 from __future__ import print_function
+from email import message
 import os.path
 from googleapiclient.discovery import build
 from google_auth_oauthlib.flow import InstalledAppFlow
@@ -133,6 +134,20 @@ def listaHidro():
             listado.append(result)
     return listado
 
-relatorio = listaHidro()
-print(relatorio)
+#enviar mensagem de bloqueio para o hidrometro
+#usa como parametro a ID do hidrometro que será bloqueado
+def bloqueiaHidro(id):
+    import socket
+    UDP_IP_ADDRESS = "127.0.0.1"
+    UDP_PORT_NO = int(id)
+    print(UDP_PORT_NO)
+    Message = ("1") #envia qualquer mensagem para bloquear o hidrometro
+    clientSock = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
+    print(Message)
+    Message = Message.encode()    
+    clientSock.sendto(Message, (UDP_IP_ADDRESS, UDP_PORT_NO))
 
+
+id =input('Digite o ID do hidrometro que será bloqueado')
+id = int(id)
+bloqueiaHidro(id)
