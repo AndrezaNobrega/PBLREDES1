@@ -10,15 +10,13 @@ class myhandler(http.server.SimpleHTTPRequestHandler):
             self.path = 'v2/servidor'
             return http.server.SimpleHTTPRequestHandler.do_GET(self)
         
-        if self.path == '/users': #endpoint
+        if self.path == '/users': #endpoint #aqui lista o histórico do consumo do hidrômetro por sua ID
             #HTTP Client
             #Para consulta utilizar
             #{
 	        #"search" : idHidrômetro
             #}            
-            content_length = int(self.headers['Content-Length']) #json do insomnia
-            
-            
+            content_length = int(self.headers['Content-Length']) #json do insomnia            
             if content_length:
                 input_json = self.rfile.read(content_length)
                 input_data = json.loads(input_json) #Dicionario
@@ -35,8 +33,94 @@ class myhandler(http.server.SimpleHTTPRequestHandler):
             output_json = json.dumps(output_data) #transformar em JSON
 
             self.wfile.write(output_json.encode('utf-8')) #enviar a resposta pro cliente/insomnia
+        
+        if self.path == '/litros': #endpoint #aqui busca o valor dos litros consumidos por id do hidrometro
+            #HTTP Client
+            #Para consulta utilizar
+            #{
+	        #"search" : idHidrômetro
+            #}            
+            content_length = int(self.headers['Content-Length']) #json do insomnia            
+            if content_length:
+                input_json = self.rfile.read(content_length)
+                input_data = json.loads(input_json) #Dicionario
+            else:
+                input_data = None
+                
+            data = (getData.getLitrosID(str(input_data['search']))) #Buscar com a função getData o id da entidade desejada(Hidrômetro)
 
-    def do_POST(self): #aqui enviamos informações
+            self.send_response(200)
+            self.send_header("Content-type", "application/json")
+            self.end_headers()
+
+            output_data = {'Litros gastos': data} #montar o dicionário chave => valor 
+            output_json = json.dumps(output_data) #transformar em JSON
+
+            self.wfile.write(output_json.encode('utf-8')) #enviar a resposta pro cliente/insomnia
+        
+        if self.path == '/valor': #endpoint #aqui retorna o valor da conta com base na id do hidrômetro
+            #HTTP Client
+            #Para consulta utilizar
+            #{
+	        #"search" : idHidrômetro
+            #}            
+            content_length = int(self.headers['Content-Length']) #json do insomnia            
+            if content_length:
+                input_json = self.rfile.read(content_length)
+                input_data = json.loads(input_json) #Dicionario
+            else:
+                input_data = None
+                
+            data = (getData.calculoConta(str(input_data['search']))) #Buscar com a função getData o id da entidade desejada(Hidrômetro)
+
+            self.send_response(200)
+            self.send_header("Content-type", "application/json")
+            self.end_headers()
+
+            output_data = {'Valor da conta': data} #montar o dicionário chave => valor 
+            output_json = json.dumps(output_data) #transformar em JSON
+
+            self.wfile.write(output_json.encode('utf-8')) #enviar a resposta pro cliente/insomnia
+        
+        if self.path == '/status': #endpoint #aqui retorna se o cliente está em débito (com a conta atrasada), com base em sua ID
+            #HTTP Client
+            #Para consulta utilizar
+            #{
+	        #"search" : idHidrômetro
+            #}            
+            content_length = int(self.headers['Content-Length']) #json do insomnia            
+            if content_length:
+                input_json = self.rfile.read(content_length)
+                input_data = json.loads(input_json) #Dicionario
+            else:
+                input_data = None
+                
+            data = (getData.emDebito(str(input_data['search']))) #Buscar com a função getData o id da entidade desejada(Hidrômetro)
+
+            self.send_response(200)
+            self.send_header("Content-type", "application/json")
+            self.end_headers()
+
+            output_data = {'Status do cliente': data} #montar o dicionário chave => valor 
+            output_json = json.dumps(output_data) #transformar em JSON
+
+            self.wfile.write(output_json.encode('utf-8')) #enviar a resposta pro cliente/insomnia
+
+        if self.path == '/admin': #endpoint #aqui retorna a lista dos clientes, com o status e o valor a ser pago  
+                    
+            
+            data = (getData.listaHidro()) #Busca a lista de todos os hidrômetros 
+            self.send_response(200)
+            self.send_header("Content-type", "application/json")
+            self.end_headers()
+
+            output_data = {'Status do cliente': data} #montar o dicionário chave => valor 
+            output_json = json.dumps(output_data) #transformar em JSON
+
+            self.wfile.write(output_json.encode('utf-8')) #enviar a resposta pro cliente/insomnia
+
+
+    def do_POST(self): #aqui modificações
         if self.path == '/bloquear':            
             content_length = int(self.headers['Content-Length']) #json do insomnia
             

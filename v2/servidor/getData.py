@@ -1,7 +1,7 @@
 from __future__ import print_function
 import os.path
 from googleapiclient.discovery import build
-#from google_auth_oauthlib.flow import InstalledAppFlow
+from google_auth_oauthlib.flow import InstalledAppFlow
 from google.auth.transport.requests import Request
 from google.oauth2.credentials import Credentials
 import json
@@ -110,13 +110,13 @@ def emDebito(id):
     resultado = hoje - inicio #subtrai a primeira data da conta por agora
     if resultado == timedelta(minutes = 2) or resultado > timedelta(minutes = 2): #programei dois minutos para simulaçao
         print('Este usuário está em débito')
-        devendo = str('Em débito')
+        devendo = str('Em debito')
     else:
         print('Quitado')
         devendo = str('Quitado')
     return devendo
 
-# Retorna a listagem de todos os hidrometros com o status se está em débito ou não
+# Retorna a listagem de todos os hidrometros com o status se está em débito ou não e o valor da conta a ser paga
 def listaHidro():
     getValues()
     listado = []          
@@ -133,10 +133,6 @@ def listaHidro():
             valor.append(calculoConta(globalValues[3])) #verifica valor
             result.append(emDebito(globalValues[3])) #verifica se aquela id está em débito            
             listado.append(idList + result + valor)
-    print(listado)
+    jsonStr = json.dumps(listado)
+    return jsonStr
 
-
-    
-
-
-listaHidro()
