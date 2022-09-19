@@ -124,15 +124,15 @@ def listaHidro():
     aux = 'ID'
     for globalValues in globalValues:              
         if globalValues[3] != aux:
-            result = [] 
-            valor = []
-            idList = [] 
+            result = []            
             aux = globalValues[3]
             print( 'ID:', aux)
-            idList.append(aux)
-            valor.append(calculoConta(globalValues[3])) #verifica valor
+            result.append(aux)
+            result.append(calculoConta(globalValues[3])) #verifica valor
             result.append(emDebito(globalValues[3])) #verifica se aquela id está em débito            
-            listado.append(idList + result + valor)
-    jsonStr = json.dumps(listado)
-    return jsonStr
+            listado.append(result)
+    return listado
+
+relatorio = listaHidro()
+print(relatorio)
 

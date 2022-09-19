@@ -107,14 +107,13 @@ class myhandler(http.server.SimpleHTTPRequestHandler):
             self.wfile.write(output_json.encode('utf-8')) #enviar a resposta pro cliente/insomnia
 
         if self.path == '/admin': #endpoint #aqui retorna a lista dos clientes, com o status e o valor a ser pago  
-                    
-            
+            #n precisa enviar nada no insomnia            
             data = (getData.listaHidro()) #Busca a lista de todos os hidrômetros 
             self.send_response(200)
             self.send_header("Content-type", "application/json")
             self.end_headers()
 
-            output_data = {'Status do cliente': data} #montar o dicionário chave => valor 
+            output_data = {'Relatório dos Hidrômetroes': data} #montar o dicionário chave => valor 
             output_json = json.dumps(output_data) #transformar em JSON
 
             self.wfile.write(output_json.encode('utf-8')) #enviar a resposta pro cliente/insomnia
