@@ -88,7 +88,7 @@ def somaEnvia():   #soma, recolhe dados e os envia
             time.sleep(2)    
     tcp.close()
 
-
+#funão que faz o hidrometro ficar escutando o tempo todo para 
 def escuta():
     import socket
     global hidrometroiD
@@ -100,12 +100,19 @@ def escuta():
     serverSock.bind((UDP_IP_ADDRESS, UDP_PORT_NO))
     print('esperando conexão')
     while True:
-        data, addr = serverSock.recvfrom(1024)
-        print('Hidrômetro sendo bloqueado')
-        if data == "1":
-            status = False
+        data = serverSock.recvfrom(1024)      
+        data = str(data[0])       
+        if data == "b'1'":
+            status = True 
+            print('Hidrômetro sendo bloqueado')             
+            print('Bloqueado')
+            time.sleep(3)
         else:
-            status = True
+            status = False
+            print('Hidrômetro sendo desbloqueado')             
+            print('Desbloqueado!')
+            time.sleep(3)
+            
 print('\nA VAZÃO DEVE SER SEMPRE NO FORMATO XX \n')
 
 t = threading.Thread(target = recebeValor)

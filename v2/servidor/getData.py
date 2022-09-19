@@ -140,14 +140,26 @@ def bloqueiaHidro(id):
     import socket
     UDP_IP_ADDRESS = "127.0.0.1"
     UDP_PORT_NO = int(id)
-    print(UDP_PORT_NO)
-    Message = ("1") #envia qualquer mensagem para bloquear o hidrometro
+    print('Bloqueando o hidrometro: \n', UDP_PORT_NO)
+    Message = ("1") #envia a mensagem para bloquear o hidrometro
     clientSock = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
     print(Message)
     Message = Message.encode()    
     clientSock.sendto(Message, (UDP_IP_ADDRESS, UDP_PORT_NO))
 
+#enviar mensagem parra desbloqueiar o hidrometro
+#usa como parametro a ID do hidrometro
+def desbloqueiaHidro(id):
+    import socket
+    UDP_IP_ADDRESS = "127.0.0.1"
+    UDP_PORT_NO = int(id)
+    print('Desbloqueando o hidrometro: \n', UDP_PORT_NO)
+    Message = ("12") #envia mensagem para desbloquear o hidrometro
+    clientSock = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
+    print(Message)
+    Message = Message.encode()    
+    clientSock.sendto(Message, (UDP_IP_ADDRESS, UDP_PORT_NO))
 
-id =input('Digite o ID do hidrometro que será bloqueado')
+id =input('Digite o ID do hidrometro que será bloqueado: ')
 id = int(id)
-bloqueiaHidro(id)
+desbloqueiaHidro(id)
