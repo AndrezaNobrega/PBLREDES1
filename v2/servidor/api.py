@@ -163,7 +163,7 @@ class myhandler(http.server.SimpleHTTPRequestHandler):
             self.send_header("Content-type", "application/json")
             self.end_headers()
 
-            output_data = {data: 'Foi bloqueado'} #montar o dicionário chave => valor 
+            output_data = {data: 'Foi desbloqueado'} #montar o dicionário chave => valor 
             output_json = json.dumps(output_data) #transformar em JSON
 
             self.wfile.write(output_json.encode('utf-8')) #enviar a resposta pro cliente/insomnia
