@@ -5,10 +5,6 @@ import getData
 
 class myhandler(http.server.SimpleHTTPRequestHandler):
     def do_GET(self):
-        if self.path == '/index':
-            self.path = 'v2/servidor'
-            return http.server.SimpleHTTPRequestHandler.do_GET(self)
-        
         if self.path == '/users': #endpoint #aqui lista o histórico do consumo do hidrômetro por sua ID
             #HTTP Client
             #Para consulta utilizar
@@ -134,11 +130,11 @@ class myhandler(http.server.SimpleHTTPRequestHandler):
     def do_POST(self): #aqui modificações
         #HTTP Client
         if self.path == '/bloqueia': #endpoint #aqui o cliente é bloqueado 
-        #HTTP Client
-        #Para consulta utilizar
-        #{
-	    #"search" : idHidrômetro
-        #}            
+            #HTTP Client
+            #Para consulta utilizar
+            #{
+            #"search" : idHidrômetro
+            #}            
             content_length = int(self.headers['Content-Length']) #json do insomnia            
             if content_length:
                 input_json = self.rfile.read(content_length)
@@ -186,5 +182,5 @@ class myhandler(http.server.SimpleHTTPRequestHandler):
 PORT = 5002
 handler = myhandler
 print('Iniciando o server')
-myserver = socketserver.TCPServer(("", PORT), handler)
+myserver = socketserver.TCPServer(("0.0.0.0", PORT), handler)
 myserver.serve_forever()

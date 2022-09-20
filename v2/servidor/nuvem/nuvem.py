@@ -25,7 +25,7 @@ def conectado(con, cliente):
             creds.refresh(Request())
         else:
             flow = InstalledAppFlow.from_client_secrets_file(
-                'v2/servidor/client_secret.json', SCOPES) #arquivo usado para fazer a primeira autenticação
+                'client_secret.json', SCOPES) #arquivo usado para fazer a primeira autenticação
             creds = flow.run_local_server(port=0)
         # salvamos para o próximo acesso
         with open('token.json', 'w') as token: #Autenticação p/ acessar a planilha
@@ -45,7 +45,7 @@ def conectado(con, cliente):
         print('\nVazão atual: ' + dado[-7:-5])
         print('\n ID:' + dado[-5:])
         print('\n Situção de vazamento (0 para vazamento e 1 para não)'+ dado[-1:])            
-        consumo = dado[:-23], dado[-21:-7], dado[-7:-5], dado[-5:], dado[-1:]
+        consumo = dado[:-23], dado[-21:-7], dado[-7:-5], dado[-4:], dado[-1:]
         dadosHidr.append(consumo)
         print('printando lista',dadosHidr)        
         #envio para google sheets. Damos sempre um append com uma  linha no final        

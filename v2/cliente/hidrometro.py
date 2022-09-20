@@ -10,13 +10,3 @@ class Hidrometro: #construtor
 
     def getStatus(self):
         return self.bloqueado
-
-        
-"""    def setBloqueado(self): #Bloquear e desbloquear hidrometro
-        if self.bloqueado == False:
-            bloqueado = True
-            self.bloqueado = bloqueado
-        else:
-            self.bloqueado = False
-        return self.bloqueado    """
-
