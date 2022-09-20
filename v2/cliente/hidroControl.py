@@ -101,7 +101,7 @@ def somaEnvia():   #soma, recolhe dados e os envia
             time.sleep(2)    
     tcp.close()
 
-#funão que faz o hidrometro ficar escutando o tempo todo para 
+#funão que faz o hidrometro ficar escutando o tempo todo para bloquear # essa conexão é udp
 def escuta():
     import socket
     global hidrometroiD
