@@ -116,6 +116,19 @@ class myhandler(http.server.SimpleHTTPRequestHandler):
             output_json = json.dumps(output_data) #transformar em JSON
 
             self.wfile.write(output_json.encode('utf-8')) #enviar a resposta pro cliente/insomnia
+        
+        if self.path == '/notifica': #endpoint #aqui retorna o relatório de vazamento de todo o bd
+            #n precisa enviar nada no insomnia            
+            data = (getData.listaVazamento()) #Busca a lista de todos os hidrômetros 
+            self.send_response(200)
+            self.send_header("Content-type", "application/json")
+            self.end_headers()
+
+            output_data = {'Relatório de vazamento': data} #montar o dicionário chave => valor 
+            output_json = json.dumps(output_data) #transformar em JSON
+
+            self.wfile.write(output_json.encode('utf-8')) #enviar a resposta pro cliente/insomnia
+
 
 
     def do_POST(self): #aqui modificações

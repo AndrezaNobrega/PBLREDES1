@@ -163,3 +163,17 @@ def desbloqueiaHidro(id):
     Message = Message.encode()    
     clientSock.sendto(Message, (UDP_IP_ADDRESS, UDP_PORT_NO))
     return id
+
+# Retorna a listagem de todos os hidrometros que estão com vazamento
+def listaVazamento():
+    getValues()
+    listado = []          
+    global globalValues
+    aux = 'ID'
+    for globalValues in globalValues:              
+        if globalValues[4] == '0':
+           listado.append(globalValues)
+    print(listado)
+    return listado
+
+listaVazamento()
