@@ -12,6 +12,7 @@ import datetime
 vazao = 11 #a vazão inicia com 11
 litroConsumidos = 0
 status = False
+pressao = 1 #aqui é a pressão que está sendo exercida no hidrometro
 
 sem = threading.Semaphore() #semaforo
 hidrometroiD = str(random.randint(1024,5000))
@@ -23,11 +24,20 @@ def getData():
         dataAux= dataAux[:16] #recortando horas e segundos da String
         return dataAux
 
+def vazamento(pressao):    
+    if pressao == 0:
+        return '0' #significa que está ocorrendo um vazamento
+    else:
+        return '1' #não há vazamento
+
+
 
 "Metodo que altera a vazão do usuário"
 def recebeValor(): #pede o valor
+    global pressao
     global vazao
     global status
+    pressao = str(random.randint(0,9)) #fica sendo gerado um valor entre 0 e 10, caso esse valor seja zero, significa que há algum problema nos canos
     while True:
         if status == False:
             sem.acquire()
@@ -45,6 +55,8 @@ def recebeValor(): #pede o valor
 def somaEnvia():   #soma, recolhe dados e os envia   
     global litroConsumidos
     global vazao
+    global pressao 
+    vaza = 0
     id = hidrometro1.getId()    
     global status
     HOST = '127.0.0.1'     # Endereco IP do Servidor
@@ -60,9 +72,10 @@ def somaEnvia():   #soma, recolhe dados e os envia
             litroConsumidos = litroConsumidos + vazao
             print('Temos', litroConsumidos, 'L consumidos')  
             litroConsumidos = str(litroConsumidos)
-            vazao = str(vazao)      
-            infoHidro = litroConsumidos + data + vazao + id
-            print ('\n ID:', id ,'\nLitros utilizados:', litroConsumidos, '\nData do envio:', data, '\nVazão atual:', vazao) #visualização do envio
+            vazao = str(vazao) 
+            vaza = vazamento(pressao)
+            infoHidro = litroConsumidos + data + vazao + id + vaza
+            print ('\n ID:', id ,'\nLitros utilizados:', litroConsumidos, '\nData do envio:', data, '\nVazão atual:', 'Situação do vazamento', vaza) #visualização do envio
             infoHidro = infoHidro.encode() #encodando para que possa ser enviado
             tcp.send(infoHidro)  #enviando dados 
             litroConsumidos = int(litroConsumidos)
@@ -78,7 +91,7 @@ def somaEnvia():   #soma, recolhe dados e os envia
             print('Temos', litroConsumidos, 'L consumidos')  
             litroConsumidos = str(litroConsumidos)
             vazao = str(vazao)      
-            infoHidro = litroConsumidos + data + vazao + id
+            infoHidro = litroConsumidos + data + vazao + id + vazamento
             print ('\n ID:', id ,'\nLitros utilizados:', litroConsumidos, '\nData do envio:', data, '\nVazão atual:', vazao) #visualização do envio
             infoHidro = infoHidro.encode() #encodando para que possa ser enviado
             tcp.send(infoHidro)  #enviando dados 

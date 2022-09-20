@@ -34,20 +34,20 @@ def conectado(con, cliente):
     service = build('sheets', 'v4', credentials=creds)
     print ('Conectado por', cliente)
     sheet = service.spreadsheets() #resgata o arquivo      
-    while True:
-        for i in range(1):
-            dadosHidr = [] #criando lista p os dados dos hidrometros - a lista recebe duas colunas e depois zera novamente
-            data = con.recv(1024) #recebendo            
-            dado = data.decode() 
-            if not data: break
-            print ('Recebendo dado de:\n', cliente)
-            print('\nLitros utilizados: ' + dado[:-22])
-            print('\nHorário/Data: ' + dado[-20:-6])
-            print('\nVazão atual: ' + dado[-6:-4])
-            print('\n ID:' + dado[-4:])            
-            consumo = dado[:-22], dado[-20:-6], dado[-6:-4], dado[-4:]
-            dadosHidr.append(consumo)
-            print(i)
+    while True:        
+        dadosHidr = [] #criando lista p os dados dos hidrometros - a lista recebe duas colunas e depois zera novamente
+        data = con.recv(1024) #recebendo            
+        dado = data.decode() 
+        if not data: break
+        print ('Recebendo dado de:\n', cliente)
+        print('\nLitros utilizados: ' + dado[:-23])
+        print('\nHorário/Data: ' + dado[-21:-7])
+        print('\nVazão atual: ' + dado[-7:-5])
+        print('\n ID:' + dado[-5:])
+        print('\n Situção de vazamento (0 para vazamento e 1 para não)'+ dado[-1:])            
+        consumo = dado[:-23], dado[-21:-7], dado[-7:-5], dado[-5:], dado[-1:]
+        dadosHidr.append(consumo)
+        print('printando lista',dadosHidr)        
         #envio para google sheets. Damos sempre um append com uma  linha no final        
         result = sheet.values().append(spreadsheetId='1SDuvwzFTQ4_KIgtYVUgTLKVa2okDRYBc4gXl2Fn8fO0', #id da planilha
                                     range='Página1!A2', 
