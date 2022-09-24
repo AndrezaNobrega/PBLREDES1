@@ -41,13 +41,13 @@ O usuário se conecta ao BD por meio da API Rest. Este, por sua vez, possui um m
 - Visualizar o valor da sua conta;
 - Pagar a sua conta;
 
-# Tela do administrador
-O admiin se conecta ao BD por meio da API rest. Que possui um menu, onde apresenta as seguintes atribuições:
+# Tela do administrador 
+O admin se conecta ao BD por meio da API rest. Que possui um menu, onde apresenta as seguintes atribuições:
 - Listar todos os usuários com o Status e valor a ser pago;
   O status é gerado da seguinte forma: por motivos acadêmicos, são contabilizados dois minutos para o usuário ficar em débito.
-- Lista o gasto de todos;
 - Pode bloquear um usuário;
 - Lista também os hidrômetros com possível vazamento;
+- A senha é 1234;
 
 # Api Rest
 
