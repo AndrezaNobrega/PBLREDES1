@@ -24,7 +24,7 @@ class myhandler(http.server.SimpleHTTPRequestHandler):
             self.send_header("Content-type", "application/json")
             self.end_headers()
 
-            output_data = {'Histórico do hidrometro': data} #montar o dicionário chave => valor 
+            output_data = {'Historico do hidrometro': data} #montar o dicionário chave => valor 
             output_json = json.dumps(output_data) #transformar em JSON
 
             self.wfile.write(output_json.encode('utf-8')) #enviar a resposta pro cliente/insomnia
@@ -108,7 +108,7 @@ class myhandler(http.server.SimpleHTTPRequestHandler):
             self.send_header("Content-type", "application/json")
             self.end_headers()
 
-            output_data = {'Relatório dos Hidrômetroes': data} #montar o dicionário chave => valor 
+            output_data = {'Relatorio dos Hidrometros': data} #montar o dicionário chave => valor 
             output_json = json.dumps(output_data) #transformar em JSON
 
             self.wfile.write(output_json.encode('utf-8')) #enviar a resposta pro cliente/insomnia
@@ -124,16 +124,12 @@ class myhandler(http.server.SimpleHTTPRequestHandler):
             output_json = json.dumps(output_data) #transformar em JSON
 
             self.wfile.write(output_json.encode('utf-8')) #enviar a resposta pro cliente/insomnia
-
-
-
-    def do_POST(self): #aqui modificações
-        #HTTP Client
-        if self.path == '/bloqueia': #endpoint #aqui o cliente é bloqueado 
+        
+        if self.path == '/ip': #endpoint #aqui retorna se o IP do cliente
             #HTTP Client
             #Para consulta utilizar
             #{
-            #"search" : idHidrômetro
+	        #"search" : idHidrômetro
             #}            
             content_length = int(self.headers['Content-Length']) #json do insomnia            
             if content_length:
@@ -142,7 +138,33 @@ class myhandler(http.server.SimpleHTTPRequestHandler):
             else:
                 input_data = None
                 
-            data = (getData.bloqueiaHidro(str(input_data['search']))) #Buscar com a função getData o id da entidade desejada(Hidrômetro)
+            data = (getData.listaIp(str(input_data['search']))) #Buscar com a função getData o id da entidade desejada(Hidrômetro)
+
+            self.send_response(200)
+            self.send_header("Content-type", "application/json")
+            self.end_headers()
+
+            output_data = {'Código': data} #montar o dicionário chave => valor 
+            output_json = json.dumps(output_data) #transformar em JSON
+
+            self.wfile.write(output_json.encode('utf-8')) #enviar a resposta pro cliente/insomnia
+
+
+
+    def do_POST(self): #aqui modificações
+        #HTTP Client
+        if self.path == '/bloqueia': #endpoint #aqui o cliente é bloqueado 
+            #HTTP Client
+            #Para consulta utilizar
+            #{ "search": idHidrometro, "ip": ip}           
+            content_length = int(self.headers['Content-Length']) #json do insomnia            
+            if content_length:
+                input_json = self.rfile.read(content_length)
+                input_data = json.loads(input_json) #Dicionario
+            else:
+                input_data = None
+                
+            data = (getData.bloqueiaHidro(input_data['search'], input_data['ip'])) #Buscar com a função getData o id da entidade desejada(Hidrômetro)
 
             self.send_response(200)
             self.send_header("Content-type", "application/json")
@@ -155,10 +177,7 @@ class myhandler(http.server.SimpleHTTPRequestHandler):
         #HTTP Client
         if self.path == '/desbloqueia': #endpoint #aqui o cliente é desbloqueado
         #HTTP Client
-        #Para consulta utilizar
-        #{
-	    #"search" : idHidrômetro
-        #}            
+        # { "search": IdHidrometro, "ip": ip}   
             content_length = int(self.headers['Content-Length']) #json do insomnia            
             if content_length:
                 input_json = self.rfile.read(content_length)
@@ -166,13 +185,13 @@ class myhandler(http.server.SimpleHTTPRequestHandler):
             else:
                 input_data = None
                 
-            data = (getData.desbloqueiaHidro(str(input_data['search']))) #Buscar com a função getData o id da entidade desejada(Hidrômetro)
+            data = (getData.bloqueiaHidro(input_data['search'], input_data['ip'])) #Buscar com a função getData o id da entidade desejada(Hidrômetro)
 
             self.send_response(200)
             self.send_header("Content-type", "application/json")
             self.end_headers()
 
-            output_data = {data: 'Foi desbloqueado'} #montar o dicionário chave => valor 
+            output_data = {data: 'Sua conta está paga'} #montar o dicionário chave => valor 
             output_json = json.dumps(output_data) #transformar em JSON
 
             self.wfile.write(output_json.encode('utf-8')) #enviar a resposta pro cliente/insomnia

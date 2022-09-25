@@ -13,6 +13,7 @@ vazao = 11 #a vazão inicia com 11
 litroConsumidos = 0
 status = False
 pressao = 1 #aqui é a pressão que está sendo exercida no hidrometro
+UDP_IP_ADDRESS = "127.0.0.1" #ip do hidrometro
 
 sem = threading.Semaphore() #semaforo
 hidrometroiD = str(random.randint(1024,5000))
@@ -42,20 +43,27 @@ def recebeValor(): #pede o valor
         if status == False:
             sem.acquire()
             try:
+                print('*'*40)
                 vazao = int(inputimeout(prompt='digite o valor da vazão:\n', timeout=5)) # no try ele vai mudar o valor
+                print('*'*40)
                 print('você digitou', vazao)                    
             except TimeoutOccurred:
-                print('Valor permanece o mesmo')                     
+                print('*'*40)
+                print('Valor permanece o mesmo') 
+                print('*'*40)                    
             sem.release()
             time.sleep(2) 
         else:
+            print('*'*40)
             print('Seu hidrometro está bloqueado, realize o pagamento.')
+            print('*'*40)
             time.sleep(2)     
 
 def somaEnvia():   #soma, recolhe dados e os envia   
     global litroConsumidos
     global vazao
-    global pressao 
+    global pressao
+    global UDP_IP_ADDRESS 
     vaza = 0
     id = hidrometro1.getId()    
     global status
@@ -69,13 +77,15 @@ def somaEnvia():   #soma, recolhe dados e os envia
             sem.acquire()
             data = getData() #pegando o momento da consumo        
             print('A vazão atual é de:', vazao) 
-            litroConsumidos = litroConsumidos + vazao
+            litroConsumidos = int(litroConsumidos + vazao)
             print('Temos', litroConsumidos, 'L consumidos')  
             litroConsumidos = str(litroConsumidos)
             vazao = str(vazao) 
             vaza = vazamento(pressao)
-            infoHidro = litroConsumidos + data + vazao + id + vaza
-            print ('\n ID:', id ,'\nLitros utilizados:', litroConsumidos, '\nData do envio:', data, '\nVazão atual:', 'Situação do vazamento', vaza) #visualização do envio
+            infoHidro = litroConsumidos + ',' + data + ',' +vazao+ ',' +id+ ',' +vaza+ ',' + UDP_IP_ADDRESS + ','
+            print('______________________________________________________________________') 
+            print ('\n ID:', id ,'\nLitros utilizados:', litroConsumidos, '\nData do envio:', data, '\nVazão atual:',vazao,  '\nSituação do vazamento', vaza) #visualização do envio
+            print('______________________________________________________________________') 
             infoHidro = infoHidro.encode() #encodando para que possa ser enviado
             tcp.send(infoHidro)  #enviando dados 
             litroConsumidos = int(litroConsumidos)
@@ -85,28 +95,32 @@ def somaEnvia():   #soma, recolhe dados e os envia
         else:
             vazao = 0
             sem.acquire()
+            sem.acquire()
             data = getData() #pegando o momento da consumo        
             print('A vazão atual é de:', vazao) 
-            litroConsumidos = litroConsumidos + vazao
+            litroConsumidos = int(litroConsumidos + vazao)
             print('Temos', litroConsumidos, 'L consumidos')  
             litroConsumidos = str(litroConsumidos)
-            vazao = str(vazao)      
-            infoHidro = litroConsumidos + data + vazao + id + vazamento
-            print ('\n ID:', id ,'\nLitros utilizados:', litroConsumidos, '\nData do envio:', data, '\nVazão atual:', vazao) #visualização do envio
+            vazao = str(vazao) 
+            vaza = vazamento(pressao)
+            infoHidro = litroConsumidos + ',' + data + ',' +vazao+ ',' +id+ ',' +vaza+ ',' + UDP_IP_ADDRESS + ','
+            print('______________________________________________________________________') 
+            print ('\n ID:', id ,'\nLitros utilizados:', litroConsumidos, '\nData do envio:', data, '\nVazão atual:',vazao,  '\nSituação do vazamento', vaza) #visualização do envio
+            print('______________________________________________________________________') 
             infoHidro = infoHidro.encode() #encodando para que possa ser enviado
             tcp.send(infoHidro)  #enviando dados 
             litroConsumidos = int(litroConsumidos)
             vazao = int(vazao)        
             sem.release()
-            time.sleep(2)    
+            time.sleep(2)            
     tcp.close()
 
 #funão que faz o hidrometro ficar escutando o tempo todo para bloquear # essa conexão é udp
 def escuta():
     import socket
     global hidrometroiD
-    UDP_IP_ADDRESS = "127.0.0.1"
-    UDP_PORT_NO = int(hidrometroiD)
+    global UDP_IP_ADDRESS
+    UDP_PORT_NO = int(hidrometroiD) #porta que o hidrometro está se conectando
     global status
     data = 0
     serverSock = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)

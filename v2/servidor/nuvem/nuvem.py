@@ -39,15 +39,15 @@ def conectado(con, cliente):
         data = con.recv(1024) #recebendo            
         dado = data.decode() 
         if not data: break
-        print ('Recebendo dado de:\n', cliente)
-        print('\nLitros utilizados: ' + dado[:-23])
-        print('\nHorário/Data: ' + dado[-21:-7])
-        print('\nVazão atual: ' + dado[-7:-5])
-        print('\n ID:' + dado[-5:])
-        print('\n Situção de vazamento (0 para vazamento e 1 para não)'+ dado[-1:])            
-        consumo = dado[:-23], dado[-21:-7], dado[-7:-5], dado[-4:], dado[-1:]
-        dadosHidr.append(consumo)
-        print('printando lista',dadosHidr)        
+        listrosUtilizados, dataH, vazao, id, vaza, ip, *temp = dado.split(',')    #a variável temp é temp para o demsempacotamento c o split    
+        print ('Recebendo dado de cliente com IP:\n', ip)
+        print('\nLitros utilizados: ' + listrosUtilizados)
+        print('\nHorário/Data: ' + dataH)
+        print('\nVazão atual: ' + vazao)
+        print('\n ID:' + id)
+        print('\n Situção de vazamento (0 para vazamento e 1 para não)'+ vaza)            
+        consumo = listrosUtilizados, dataH, vazao, id, vaza, ip
+        dadosHidr.append(consumo)               
         #envio para google sheets. Damos sempre um append com uma  linha no final        
         result = sheet.values().append(spreadsheetId='1SDuvwzFTQ4_KIgtYVUgTLKVa2okDRYBc4gXl2Fn8fO0', #id da planilha
                                     range='Página1!A2', 

@@ -138,9 +138,9 @@ def listaHidro():
 
 #enviar mensagem de bloqueio para o hidrometro
 #usa como parametro a ID do hidrometro que será bloqueado
-def bloqueiaHidro(id):
+def bloqueiaHidro(id, ip):
     import socket
-    UDP_IP_ADDRESS = "127.0.0.1"
+    UDP_IP_ADDRESS = ip
     UDP_PORT_NO = int(id)
     print('Bloqueando o hidrometro: \n', UDP_PORT_NO)
     Message = ("1") #envia a mensagem para bloquear o hidrometro
@@ -152,9 +152,9 @@ def bloqueiaHidro(id):
 
 #enviar mensagem parra desbloqueiar o hidrometro
 #usa como parametro a ID do hidrometro
-def desbloqueiaHidro(id):
+def desbloqueiaHidro(id, ip):
     import socket
-    UDP_IP_ADDRESS = "127.0.0.1"
+    UDP_IP_ADDRESS = ip
     UDP_PORT_NO = int(id)
     print('Desbloqueando o hidrometro: \n', UDP_PORT_NO)
     Message = ("12") #envia mensagem para desbloquear o hidrometro
@@ -176,4 +176,13 @@ def listaVazamento():
     print(listado)
     return listado
 
-listaVazamento()
+#esse método serve para consultar o ip com base na id
+def listaIp(id):
+    getValues()
+    ip = ''
+    global globalValues    
+    for globalValues in globalValues:
+        if globalValues[3] == id: #busca pelo
+            ip = globalValues[5]            
+        
+    return ip
