@@ -4,7 +4,6 @@ ADD api.py /api/
 ADD getData.py /api/
 ADD client_secret.json /api/
 ADD token.json /api/
-ADD telas.py /api/
 
 EXPOSE 5002
 

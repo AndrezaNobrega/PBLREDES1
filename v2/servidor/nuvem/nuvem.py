@@ -9,7 +9,7 @@ from google.oauth2.credentials import Credentials
 
 import _thread
 
-HOST = ''              # Endereco IP do Servidor
+HOST = '172.16.103.4'              # Endereco IP do Servidor
 PORT = 5000            # Porta que o Servidor esta
 
 SCOPES = ['https://www.googleapis.com/auth/spreadsheets']

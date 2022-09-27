@@ -1,8 +1,5 @@
 import requests
 #Front end das telas de usuário e de admin
-
-
-
 def menu():
     print('_______________________________________________________')
     print('####################### M E N U #######################')
@@ -24,7 +21,7 @@ def menu():
         print('5) Retornar para o menu')
         opcao = input('Digite a opção que deseja escolher: \n')  
         if opcao == '1':
-            url = "http://127.0.0.1:5002/users"
+            url = "http://172.16.103.6:5002/users"
             print('HISTÓRICO DE CONSUMO:')            
             payload = {"search": resposta}
             print('')
@@ -35,7 +32,7 @@ def menu():
             print(response.text)
             menu()
         elif opcao == '2':
-            url = "http://127.0.0.1:5002/litros"
+            url = "http://172.16.103.6:5002/litros"
             print('TOTAL DE LITROS CONSUMIDOS:')
             print('')
             print('Aguarde alguns instantes enquanto a consulta é realizada')
@@ -50,7 +47,7 @@ def menu():
             print('')
             print('Aguarde alguns instantes enquanto a consulta é realizada')
             print('')
-            url = "http://127.0.0.1:5002/valor"
+            url = "http://172.16.103.6:5002/valor"
             payload = {"search": resposta}
             headers = {"Content-Type": "application/json"}
             response = requests.request("GET", url, json=payload, headers=headers)
@@ -58,11 +55,11 @@ def menu():
             menu()
         elif opcao == '4':
             print('Efetuar o pagamento da sua conta')
-            url = "http://127.0.0.1:5002/ip"
+            url = "http://172.16.103.6:5002/ip"
             payload = {"search": resposta}
             headers = {"Content-Type": "application/json"}
             response1 = requests.request("GET", url, json=payload, headers=headers)            
-            url = "http://127.0.0.1:5002/valor"
+            url = "http://172.16.103.6:5002/valor"
             payload = {"search": resposta}
             headers = {"Content-Type": "application/json"}
             response = requests.request("GET", url, json=payload, headers=headers)
@@ -70,7 +67,7 @@ def menu():
             print(response1.text)
             print('Código da conta, digite para efetuar o pagamento')
             ip = str(input('Digite: \n'))
-            url = "http://127.0.0.1:5002/desbloqueia"
+            url = "http://172.16.103.6:5002/desbloqueia"
 
             payload = {
                 "search": resposta,
@@ -104,7 +101,7 @@ def menu():
                 print('')
                 print('Aguarde alguns instantes enquanto a consulta é realizada')
                 print('')
-                url = "http://127.0.0.1:5002/admin"
+                url = "http://172.16.103.6:5002/admin"
                 headers = {"Content-Type": "application/json"}
                 response = requests.request("GET", url, headers=headers)
                 print(response.text)
@@ -114,7 +111,7 @@ def menu():
                 print('')
                 print('Aguarde alguns instantes enquanto a consulta é realizada')
                 print('')
-                url = "http://127.0.0.1:5002/notifica"
+                url = "http://172.16.103.6:5002/notifica"
                 headers = {"Content-Type": "application/json"}
                 response = requests.request("GET", url, headers=headers)
                 print(response.text)
@@ -126,7 +123,7 @@ def menu():
                 print('Aguarde alguns instantes')
                 print('') 
                 #método de consulta do IP               
-                url = "http://127.0.0.1:5002/ip"
+                url = "http://172.16.103.6:5002/ip"
                 payload = {"search": id}
                 headers = {"Content-Type": "application/json"}
                 response = requests.request("GET", url, json=payload, headers=headers)
@@ -134,7 +131,7 @@ def menu():
                 print(response.text)
                 ip = str(input('Digite aqui o código do hidrômetro que será bloqueado'))
                 #método de bloqueio
-                url = "http://127.0.0.1:5002/bloqueia"
+                url = "http://172.16.103.6:5002/bloqueia"
                 payload = {
                     "search": id,
                     "ip": ip

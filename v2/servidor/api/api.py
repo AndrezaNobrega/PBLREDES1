@@ -201,5 +201,5 @@ class myhandler(http.server.SimpleHTTPRequestHandler):
 PORT = 5002
 handler = myhandler
 print('Iniciando o server')
-myserver = socketserver.TCPServer(("0.0.0.0", PORT), handler)
+myserver = socketserver.TCPServer(("172.16.103.6", PORT), handler)
 myserver.serve_forever()

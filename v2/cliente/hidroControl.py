@@ -13,7 +13,7 @@ vazao = 11 #a vazão inicia com 11
 litroConsumidos = 0
 status = False
 pressao = 1 #aqui é a pressão que está sendo exercida no hidrometro
-UDP_IP_ADDRESS = "127.0.0.1" #ip do hidrometro
+UDP_IP_ADDRESS = "172.16.103.7" #ip do hidrometro
 
 sem = threading.Semaphore() #semaforo
 hidrometroiD = str(random.randint(1024,5000))
@@ -67,7 +67,7 @@ def somaEnvia():   #soma, recolhe dados e os envia
     vaza = 0
     id = hidrometro1.getId()    
     global status
-    HOST = '127.0.0.1'     # Endereco IP do Servidor
+    HOST = '172.16.103.4'     # Endereco IP do Servidor
     PORT = 5000            # Porta que o Servidor esta
     tcp = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
     dest = (HOST, PORT)
@@ -138,10 +138,9 @@ def escuta():
             status = False
             print('Hidrômetro sendo desbloqueado')             
             print('Desbloqueado!')
-            time.sleep(3)
-            
-print('\nA VAZÃO DEVE SER SEMPRE NO FORMATO XX \n')
+            time.sleep(3)      
 
+#startamos os sockets
 t = threading.Thread(target = recebeValor)
 t.start()
 t2 = threading.Thread(target = somaEnvia)
