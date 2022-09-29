@@ -104,10 +104,10 @@ def emDebito(id):
     data = listaId[0][1] #pega a primeira data da conta
     print(data)
     ano = int(2022)
-    mes = int(data[3:5])
-    dia = int(data[6:8])
-    hora = int(data[9:11])
-    minuto = int(data[12:14])
+    mes = int(data[5:7])   
+    dia = int(data[8:10])    
+    hora = int(data[11:13])    
+    minuto = int(data[14:16])    
     inicio = datetime(year=ano, month=mes, day=dia, hour=hora, minute=minuto, second=0)
     hoje = datetime.now()
     resultado = hoje - inicio #subtrai a primeira data da conta por agora
@@ -186,3 +186,4 @@ def listaIp(id):
             ip = globalValues[5]            
         
     return ip
+
